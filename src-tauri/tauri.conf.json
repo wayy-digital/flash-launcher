@@ -1,0 +1,68 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Flash Launcher",
+  "version": "0.4.0",
+  "identifier": "digital.wayy.flash",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:5173",
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "Flash Launcher",
+        "width": 1180,
+        "height": 720,
+        "minWidth": 1000,
+        "minHeight": 640,
+        "decorations": false,
+        "resizable": true,
+        "center": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": [
+      "deb",
+      "appimage",
+      "nsis"
+    ],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.png",
+      "icons/icon.ico"
+    ],
+    "externalBin": [
+      "binaries/flash-engine"
+    ],
+    "category": "Game",
+    "shortDescription": "Flash Launcher — Minecraft: Java Edition, Fabric, Forge, Modrinth modpacks",
+    "windows": {
+      "nsis": {
+        "installMode": "currentUser"
+      }
+    },
+    "publisher": "WAYY",
+    "createUpdaterArtifacts": true
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEIyMzgxN0Q3NDA5MEU4MEYKUldRUDZKQkExeGM0c2xtSndUMU5ubnhURlZ5dHZ3Y09YcDJTNWRTRDlhQ05GZkVOR3hiS1puR2EK",
+      "endpoints": [
+        "https://flash-launcher-api.vercel.app/api/update?target={{target}}&arch={{arch}}&bundle={{bundle_type}}&current={{current_version}}"
+      ],
+      "windows": {
+        "installMode": "passive"
+      }
+    }
+  }
+}
