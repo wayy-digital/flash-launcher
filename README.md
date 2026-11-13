@@ -40,7 +40,7 @@ UI сделан на Tauri 2 + React. Движок — CLI из [gerdaroot/Horiz
 Всё делает GitHub Actions (`.github/workflows/release.yml`):
 
 1. Поднимите `version` в `src-tauri/tauri.conf.json`, `src-tauri/Cargo.toml` и `package.json`. Напишите, что нового, в `release-notes.md`.
-2. Закоммитьте, затем `git tag v0.4.1 && git push origin main v0.4.1`.
+2. Закоммитьте и запушьте в `main`. Тег `vX.Y.Z` Actions создаст сам: собирается только версия, которой ещё нет в релизах.
 3. Actions собирает Windows (NSIS `.exe`) и Linux (AppImage, `.deb`), подписывает их ключом из секрета `TAURI_SIGNING_PRIVATE_KEY` и публикует GitHub Release.
 4. В тот же релиз Actions кладёт `releases.json`. Сервер обновлений (`flash-launcher-api` на Vercel) читает его из последнего релиза, так что через минуту лаунчеры видят новую версию. Передеплоить сервер не нужно.
 
