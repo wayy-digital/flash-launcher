@@ -1,6 +1,8 @@
 # Builds Flash Launcher for Windows (NSIS installer) and Linux (AppImage, .deb), signs the update
-# packages, publishes a GitHub Release, and writes server/releases.json on main so the update
-# server (Vercel project flash-launcher-api) tells every launcher about the new version.
+# packages and publishes a GitHub Release with releases.json, the update manifest. The update
+# server (Vercel project flash-launcher-api) reads that file from the latest release, so every
+# launcher sees the new version within minutes. Needs the repository to be public (players
+# download the files without a GitHub login) and the secret TAURI_SIGNING_PRIVATE_KEY.
 #
 # Release: bump the version (src-tauri/tauri.conf.json, src-tauri/Cargo.toml, package.json),
 # write release-notes.md, then push a tag:  git tag v0.4.1 && git push origin v0.4.1
@@ -101,8 +103,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: main
       - uses: actions/download-artifact@v4
         with:
           path: artifacts
@@ -113,10 +113,3 @@ jobs:
           name: Flash Launcher ${{ github.ref_name }}
           body_path: release-notes.md
           files: upload/*
-      - name: Tell the update server
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
-          git add server/releases.json
-          git commit -m "Update manifest for ${{ github.ref_name }}"
-          git push origin HEAD:main

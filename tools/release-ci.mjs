@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // CI: from the signed bundles of every runner (downloaded into <dir>), make the GitHub Release's
-// upload folder (names without spaces) and server/releases.json, the update manifest.
+// upload folder (names without spaces) with releases.json, the update manifest the update server
+// reads from the latest release.
 //   node tools/release-ci.mjs artifacts https://github.com/OWNER/REPO/releases/download/vX.Y.Z
 import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
@@ -26,5 +27,5 @@ for (const [key, test] of kinds) {
 }
 if (!Object.keys(platforms).length) throw new Error(`no signed bundles for ${version} in ${dir}`);
 const notes = existsSync('release-notes.md') ? readFileSync('release-notes.md', 'utf8').trim() : '';
-writeFileSync('server/releases.json', JSON.stringify({ version, notes, pub_date: new Date().toISOString(), platforms }, null, 2) + '\n');
+writeFileSync('upload/releases.json', JSON.stringify({ version, notes, pub_date: new Date().toISOString(), platforms }, null, 2) + '\n');
 console.log(`Flash Launcher ${version}: ${Object.keys(platforms).join(', ')}`);

@@ -42,7 +42,9 @@ UI сделан на Tauri 2 + React. Движок — CLI из [gerdaroot/Horiz
 1. Поднимите `version` в `src-tauri/tauri.conf.json`, `src-tauri/Cargo.toml` и `package.json`. Напишите, что нового, в `release-notes.md`.
 2. Закоммитьте, затем `git tag v0.4.1 && git push origin main v0.4.1`.
 3. Actions собирает Windows (NSIS `.exe`) и Linux (AppImage, `.deb`), подписывает их ключом из секрета `TAURI_SIGNING_PRIVATE_KEY` и публикует GitHub Release.
-4. Затем Actions записывает `server/releases.json` в `main`. Vercel (проект `flash-launcher-api`, корень `server`) деплоит его сам, и лаунчеры видят обновление.
+4. В тот же релиз Actions кладёт `releases.json`. Сервер обновлений (`flash-launcher-api` на Vercel) читает его из последнего релиза, так что через минуту лаунчеры видят новую версию. Передеплоить сервер не нужно.
+
+Репозиторий должен быть **публичным**: из приватного игроки не скачают обновление без входа в GitHub. В Settings → Secrets → Actions нужен секрет `TAURI_SIGNING_PRIVATE_KEY` — содержимое `flash-updater.key`.
 
 Вручную, без Actions: `tools/release.mjs` (см. комментарий в файле).
 
